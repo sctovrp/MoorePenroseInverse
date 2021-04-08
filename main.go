@@ -21,85 +21,61 @@ func main() {
 	// 	s = s + 1
 	// 	data[i] = float64(s)
 	// }
-	data1 := []float64{1, 3, 5, 7, 11, 13}
-	a_prim := mat.NewDense(3, 2, data1)
-	// a := mat.NewDense(3, 4, data)
-	// matPrint(a)
-	matPrint(a_prim)
+	fmt.Println("Bienvenido al programa de Matrix inversa por Moore-Penrose")
 
-	b_prim := a_prim.T()
-	matPrint(b_prim)
+	fmt.Println("Ingrese la dimension de su matrix en n (filas)")
+	var n int
+	fmt.Scanln(&n)
+	fmt.Println("n:", n)
 
-	mul1_prim := mat.NewDense(2, 2, nil)
-	mul1_prim.Mul(b_prim, a_prim)
+	fmt.Println("Ingrese la dimension de su matrix en m (Columnas)")
+	var m int
+	fmt.Scanln(&m)
+	fmt.Println("n:", m)
+
+	fmt.Println("Ahora puede ingresar los datos de la matrix")
+	data := m * n
+	datos_ingr := set(data)
+	fmt.Println("datos ingresados:", datos_ingr)
+	a := mat.NewDense(n, m, datos_ingr)
+	matPrint(a)
+
+	a_trans := a.T()
+	matPrint(a_trans)
+	// b_prim := a_prim.T()
+	// matPrint(b_prim)
+
+	mul1 := mat.NewDense(m, m, nil)
+	mul1.Mul(a_trans, a)
 	fmt.Println("multiplicacion:")
-	matPrint(mul1_prim)
+	matPrint(mul1)
 
-	inver_prim := mat.NewDense(2, 2, nil)
-	inver_prim.Inverse(mul1_prim)
+	inver := mat.NewDense(m, m, nil)
+	inver.Inverse(mul1)
 	fmt.Println("inversa:")
-	matPrint(inver_prim)
+	matPrint(inver)
 
-	final_matrix := mat.NewDense(2, 3, nil)
-	final_matrix.Mul(inver_prim, b_prim)
+	final_matrix := mat.NewDense(m, n, nil)
+	final_matrix.Mul(inver, a_trans)
 	fmt.Println("final matrix:")
 	matPrint(final_matrix)
 
-	checker := mat.NewDense(2, 2, nil)
-	checker.Mul(final_matrix, a_prim)
+	checker := mat.NewDense(m, m, nil)
+	checker.Mul(final_matrix, a)
 	fmt.Println("checker:")
 	matPrint(checker)
-
-	// b := a.T()
-	// matPrint(b)
-
-	// mul1 := mat.NewDense(3, 3, nil)
-	// mul1.Mul(a, b)
-	// fmt.Println("multiplicacion:")
-	// matPrint(mul1)
-
-	// mul2 := mat.NewDense(3, 3, nil)
-	// mul2.Inverse(mul1)
-	// matPrint(mul1)
-
-	// fmt.Println(mul2.Dims())
-	// fmt.Println(b.Dims())
-	// final := mat.NewDense(4, 4, nil)
-	// final.Mul(mul2, b)
-	// matPrint(final)
-
-	// var i, j int
-	// for i = 0; i < 3; i++ {
-	// 	for j = 0; j < 4; j++ {
-	// 		fmt.Printf("a[%d][%d] = %d\n", i, j, a[i][j])
-	// 	}
-	// }
-	// b := a
-	// fmt.Println("b", b)
-	// fmt.Println("a:")
-	// for _, h := range a {
-	// 	for _, n := range h {
-	// 		fmt.Print(n, "\t")
-	// 	}
-	// 	fmt.Println()
-	// }
-	// fmt.Println(transpose(a))
 }
+
 func matPrint(X mat.Matrix) {
 	fa := mat.Formatted(X, mat.Prefix(""), mat.Squeeze())
 	fmt.Printf("%v\n", fa)
 }
 
-// func transpose(x [][]float64) Matrix {
-// 	n := len(x[0])
-// 	m := len(x)
-// 	fmt.Println(n)
-// 	fmt.Println(m)
-// 	out := make([][]float64, m)
-// 	for i := 0; i < m; i++ {
-// 		for j := 0; j < n; j++ {
-// 			out[j] = append(out[j], x[i][j])
-// 		}
-// 	}
-// 	return out
-// }
+func set(n int) []float64 {
+	a := make([]float64, n)
+	for i := 0; i < n; i++ {
+		fmt.Scan(&a[i])
+	}
+	fmt.Println(a)
+	return a
+}
