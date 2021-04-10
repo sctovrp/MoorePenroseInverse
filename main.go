@@ -9,18 +9,18 @@ import (
 type Matrix [][]float64
 
 func main() {
-	// a := Matrix{
-	// 	{0, 1, 2, 3}, /*  initializers for row indexed by 0 */
-	// 	{4, 5, 6, 7}, /*  initializers for row indexed by 1 */
-	// 	{8, 9, 10, 11},
-	// }
-	// Generate a 6×6 matrix of random values.
-	// data := make([]float64, 12)
-	// var s = -1
-	// for i := range data {
-	// 	s = s + 1
-	// 	data[i] = float64(s)
-	// }
+
+	//
+	// Version de go: 1.16
+	// Importar la libreta gonum, version v0.9.1: "gonum.org/v1/gonum/mat"
+	// Web documentacion gonum: https://pkg.go.dev/gonum.org/v1/gonum/mat#section-documentation
+	//
+	// Datos provisionales de un ejemplo:
+	// n = 3
+	// m = 2
+	// coeficientes de la matriz = 1 3 5 7 9 11 13
+	//
+
 	fmt.Println("Bienvenido al programa de Matrix inversa por Moore-Penrose")
 
 	fmt.Println("Ingrese la dimension de su matrix en n (filas)")
@@ -33,31 +33,30 @@ func main() {
 	fmt.Scanln(&m)
 	fmt.Println("n:", m)
 
-	fmt.Println("Ahora puede ingresar los datos de la matrix")
+	fmt.Println("Ahora puede ingresar los coeficientes de la matrix")
 	data := m * n
 	datos_ingr := set(data)
-	fmt.Println("datos ingresados:", datos_ingr)
+	fmt.Println("Coeficientes ingresados:", datos_ingr)
 	a := mat.NewDense(n, m, datos_ingr)
 	matPrint(a)
 
 	a_trans := a.T()
+	fmt.Println("Transpuesta:")
 	matPrint(a_trans)
-	// b_prim := a_prim.T()
-	// matPrint(b_prim)
 
 	mul1 := mat.NewDense(m, m, nil)
 	mul1.Mul(a_trans, a)
-	fmt.Println("multiplicacion:")
+	fmt.Println("Multiplicacion:")
 	matPrint(mul1)
 
 	inver := mat.NewDense(m, m, nil)
 	inver.Inverse(mul1)
-	fmt.Println("inversa:")
+	fmt.Println("Inversa primera multiplicacion:")
 	matPrint(inver)
 
 	final_matrix := mat.NewDense(m, n, nil)
 	final_matrix.Mul(inver, a_trans)
-	fmt.Println("final matrix:")
+	fmt.Println("Matriz inversa por el metodo Moore-Penrose:")
 	matPrint(final_matrix)
 
 	checker := mat.NewDense(m, m, nil)
