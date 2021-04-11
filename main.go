@@ -61,7 +61,7 @@ func main() {
 
 	checker := mat.NewDense(m, m, nil)
 	checker.Mul(final_matrix, a)
-	fmt.Println("checker:")
+	fmt.Println("Checker:")
 	matPrint(checker)
 }
 
